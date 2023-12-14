@@ -59,7 +59,7 @@ def show_hists(img, img_norm, index):
     # Normalización max-min
     x = img.read(1)
     x_norm = (x-np.min(x))/(np.max(x)-np.min(x))
-    axs[2].set_title('Normalización max-min')e
+    axs[2].set_title('Normalización max-min')
     axs[2].hist(x_norm)
     plt.savefig(f"histogram_{index}.png")
     plt.close()
