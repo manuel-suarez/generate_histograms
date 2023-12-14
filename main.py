@@ -64,8 +64,41 @@ def show_hists(img, img_norm, index):
     plt.savefig(f"histogram_{index}.png")
     plt.close()
 
+
+def show_images(img, img_norm, index):
+    fig, axs = plt.subplots(1, 2, figsize=(10, 6))
+    cmap = matplotlib.colormaps.get_cmap('viridis')
+    cmap.set_bad(color='red')
+
+    # Plot image with NaN
+    img0 = img.read(1)
+    img0[(np.abs(img0) < 1e-25).astype(bool)] = np.nan
+
+    axs[0].set_title('Imagen original')
+    m = axs[0].imshow(img0, cmap=cmap)
+    fig.colorbar(m)
+
+    # Plot transformation
+    img0 = img_norm.read(1)
+    img0[(np.abs(img0) < 1e-25).astype(bool)] = np.nan
+
+    axs[1].set_title('Transformación')
+    m = axs[1].imshow(img0, cmap=cmap)
+    fig.colorbar(m)
+
+    fig.suptitle(os.path.basename(img.name))
+    plt.savefig(f"images_{index}.png")
+    plt.show()
+
 def show_hist(index):
     show_hists(imgs[index], imgs_norm[index], index)
 
+def show_image(index):
+    show_images(imgs[index], imgs_norm[index], index)
+
+def plot_images(index):
+    show_hist(index)
+    show_image(index)
+
 for i in range(len(imgs)):
-    show_hist(i)
+    plot_images(i)
