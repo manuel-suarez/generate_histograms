@@ -50,20 +50,29 @@ plt.hist(imgs_norm[0].read(1))
 plt.title(os.path.basename(imgs_norm[0].name))
 plt.show()
 
+
 def show_hists(img, img_norm, index):
-    fig, axs = plt.subplots(1, 3, figsize=(20, 8))
+    fig, axs = plt.subplots(1, 4, figsize=(24, 8))
+    # Imagen original
     axs[0].set_title('Imagen original')
     axs[0].hist(img.read(1))
-    axs[1].set_title('Imagen normalizada')
-    axs[1].hist(img_norm.read(1))
     # Normalización max-min
     x = img.read(1)
-    x_norm = (x-np.min(x))/(np.max(x)-np.min(x))
-    axs[2].set_title('Normalización max-min')
-    axs[2].hist(x_norm)
+    x_norm = (x - np.min(x)) / (np.max(x) - np.min(x))
+    axs[1].set_title('Normalización max-min')
+    axs[1].hist(x_norm)
+    # Transformación aplicada
+    axs[2].set_title('Transformación')
+    axs[2].hist(img_norm.read(1))
+    # Histograma sin NaN
+    img0 = img.read(1)
+    img0[(np.abs(img0) < 1e-25).astype(bool)] = np.nan
+    axs[3].set_title('Histograma sin NaN')
+    axs[3].hist(img0)
+
+    fig.suptitle(os.path.basename(img.name))
     plt.savefig(f"histogram_{index}.png")
     plt.close()
-
 
 def show_images(img, img_norm, index):
     fig, axs = plt.subplots(1, 2, figsize=(10, 6))
